@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,3 +15,14 @@ use Illuminate\Http\Request;
 */
 
 Route::apiResource("aluno","\App\Modules\Aluno\Controllers\AlunoController");
+
+
+Route::get("autenticar","Auth@login");
+
+Route::group(['middleware' => ['jwt.auth']], function(){
+    Route::get("verificar",function(){
+        $user       = JWTAuth::parseToken()->authenticate();
+        return ['response'=>'Ok'];
+    });
+
+});
